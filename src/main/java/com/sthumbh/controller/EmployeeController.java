@@ -1,7 +1,9 @@
 package com.sthumbh.controller;
 
-import com.sthumbh.model.Employee;
+import com.sthumbh.Entity.EmployeeEntity;
+import com.sthumbh.dto.EmployeeRequest;
 import com.sthumbh.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,66 +21,69 @@ public class EmployeeController {
 
     @RequestMapping(value = "/createEmployee", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, headers = "X-Requested-With=XMLHttpRequest", params = "id=123")
     //@PostMapping(path = {"/createEmployee", "/updateEmployee",path = {"/createEmployee", "/updateEmployee"}})
-    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
-        System.out.println(employee.getName());
-        return new ResponseEntity<>(employee, HttpStatus.CREATED);
+    public ResponseEntity<EmployeeRequest> createEmployee(@RequestBody @Valid EmployeeRequest employeeRequest) {
+        EmployeeRequest employeeResponse = employeeService.createEmployee(employeeRequest);
+        if (employeeResponse == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(employeeResponse, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/getEmployee", method = RequestMethod.GET)
     //@GetMapping(value = "/getEmployee")
-    public Employee getEmployee() {
-        return new Employee("hdhd", "jdjhd", "hdhdhd", "jhdhd");
+    public EmployeeRequest getEmployee() {
+        return new EmployeeRequest("hdhd", "jdjhd", "hdhdhd", "jhdhd", 10.00);
     }
 
     @RequestMapping(value = "/deleteEmployee", method = RequestMethod.DELETE)
     //@DeleteMapping(value = "/deleteEmployee")
-    public Employee deleteEmployee() {
-        return new Employee("hdhd", "jdjhd", "hdhdhd", "jhdhd");
+    public EmployeeRequest deleteEmployee() {
+        return new EmployeeRequest("hdhd", "jdjhd", "hdhdhd", "jhdhd", 10.00);
     }
 
 
     @RequestMapping(value = "/updateEmployee", method = RequestMethod.PUT)
     @PutMapping(value = "/updateEmployee")
-    public Employee updateEmployee() {
-        return new Employee("hdhd", "jdjhd", "hdhdhd", "jhdhd");
+    public EmployeeRequest updateEmployee() {
+        return new EmployeeRequest("hdhd", "jdjhd", "hdhdhd", "jhdhd", 10.00);
     }
 
 
     @GetMapping(value = "/getEmp/{emp_id}/{name}")
-    public ResponseEntity<List<Employee>> getEmployeeDetails(@PathVariable(name = "emp_id") String empId,
-                                                             @PathVariable(name = "name") String name
+    public ResponseEntity<List<EmployeeRequest>> getEmployeeDetails(@PathVariable(name = "emp_id") String empId,
+                                                                    @PathVariable(name = "name") String name
     ) {
-        List<Employee> employeeList = employeeService.getEmployee(empId, name);
+        List<EmployeeRequest> employeeRequestList = employeeService.getEmployee(empId, name);
 
-        if (employeeList.isEmpty()) {
+        if (employeeRequestList.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(employeeList, HttpStatus.OK);
+        return new ResponseEntity<>(employeeRequestList, HttpStatus.OK);
     }
 
     @GetMapping(value = "/getEmp")
-    public ResponseEntity<List<Employee>> getEmpDetail(@RequestParam(name = "empId", required = false, defaultValue = "EMP001") String empId,
-                                                       @RequestParam(name = "name", required = false) String name) {
-        List<Employee> employeeList = employeeService.getEmployee(empId, name);
+    public ResponseEntity<List<EmployeeRequest>> getEmpDetail(@RequestParam(name = "empId", required = false, defaultValue = "EMP001") String empId,
+                                                              @RequestParam(name = "name", required = false) String name) {
+        List<EmployeeRequest> employeeRequestList = employeeService.getEmployee(empId, name);
 
-        if (employeeList.isEmpty()) {
+        if (employeeRequestList.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(employeeList, HttpStatus.OK);
+        return new ResponseEntity<>(employeeRequestList, HttpStatus.OK);
     }
 
 
     @GetMapping("/getEmpByHeader")
-    public ResponseEntity<List<Employee>> getDetail(@RequestHeader(name = "user-agent") boolean userAgent,
-                                                    @RequestHeader(name = "content-type", required = false) String value) {
+    public ResponseEntity<List<EmployeeRequest>> getDetail(@RequestHeader(name = "user-agent") boolean userAgent,
+                                                           @RequestHeader(name = "content-type", required = false) String value) {
 
         if (userAgent && value.equals("text")) {
-            List<Employee> employeeList = employeeService.getEmployee("EMP001", "name");
+            List<EmployeeRequest> employeeRequestList = employeeService.getEmployee("EMP001", "name");
 
-            if (employeeList.isEmpty()) {
+            if (employeeRequestList.isEmpty()) {
                 return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(employeeList, HttpStatus.OK);
+            return new ResponseEntity<>(employeeRequestList, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
