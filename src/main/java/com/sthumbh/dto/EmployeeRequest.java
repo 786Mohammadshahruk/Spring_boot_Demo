@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmployeeRequest {
 
-
     @JsonAlias("employee_name")
     @NotBlank(message = "name should not be null or empty")
     @Size(max = 255, message = "name size should not be maximum 255")
@@ -33,6 +32,5 @@ public class EmployeeRequest {
 
     @Digits(integer = 10, fraction = 2, message = "")
     private Double value;
-
 
 }

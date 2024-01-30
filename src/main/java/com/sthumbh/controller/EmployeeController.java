@@ -1,10 +1,8 @@
 package com.sthumbh.controller;
 
-import com.sthumbh.Entity.EmployeeEntity;
 import com.sthumbh.dto.EmployeeRequest;
 import com.sthumbh.service.EmployeeService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +14,17 @@ import java.util.List;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    @Autowired
     private EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     @RequestMapping(value = "/createEmployee", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, headers = "X-Requested-With=XMLHttpRequest", params = "id=123")
     //@PostMapping(path = {"/createEmployee", "/updateEmployee",path = {"/createEmployee", "/updateEmployee"}})
-    public ResponseEntity<EmployeeRequest> createEmployee(@RequestBody @Valid EmployeeRequest employeeRequest) {
-        EmployeeRequest employeeResponse = employeeService.createEmployee(employeeRequest);
-        if (employeeResponse == null) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(employeeResponse, HttpStatus.CREATED);
+    public ResponseEntity<EmployeeRequest> createEmployee(@RequestBody EmployeeRequest employeeRequest) {
+        System.out.println(employeeRequest);
+        return new ResponseEntity<>(employeeRequest, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/getEmployee", method = RequestMethod.GET)
@@ -86,6 +84,15 @@ public class EmployeeController {
             return new ResponseEntity<>(employeeRequestList, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/createEmp", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, headers = "X-Requested-With=XMLHttpRequest", params = "id=123")
+    public ResponseEntity<EmployeeRequest> createEmp(@RequestBody @Valid EmployeeRequest employeeRequest) {
+        EmployeeRequest employeeResponse = employeeService.createEmployee(employeeRequest);
+        if (employeeResponse == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(employeeResponse, HttpStatus.CREATED);
     }
 
 
