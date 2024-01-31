@@ -7,6 +7,9 @@ import com.sthumbh.repository.UserManagementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UserManagementService {
 
@@ -29,5 +32,17 @@ public class UserManagementService {
         userResponseDto.setAddress(responseEntity.getAddress());
         userResponseDto.setMobileNumber(responseEntity.getMobileNumber());
         return userResponseDto;
+    }
+
+    public List<UserEntity> getUsers() {
+        return userManagementRepository.findAll();
+    }
+
+    public UserEntity getUsersById(long userId) {
+        Optional<UserEntity> userEntity = userManagementRepository.findById(userId);
+        if (!userEntity.isEmpty()) {
+            return userEntity.get();
+        }
+        return null;
     }
 }
