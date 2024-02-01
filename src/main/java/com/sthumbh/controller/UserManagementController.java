@@ -84,7 +84,7 @@ public class UserManagementController {
         UserEntity userEntities = userManagementService.getUsersById(userId);
         String message = "Success";
         if (userEntities == null) {
-            message = "No User Found With Id : "+userId;
+            message = "No User Found With Id : " + userId;
         }
         MetaDate metaDate = MetaDate.builder().code("200").status("Success").message(message).version("1.0").build();
         ResourceData resourceData = ResourceData.builder().data(userEntities).build();
@@ -94,6 +94,60 @@ public class UserManagementController {
 
     }
 
+    @GetMapping(value = "/get-user/{name}")
+    public ResponseEntity<CustomResponseModel> getUsersByName(@PathVariable(name = "name") String name) {
+        List<UserEntity> userEntities = userManagementService.getUsersByName(name);
 
+        String message = "Success";
+        if (userEntities == null) {
+            message = "No User Found With Name : " + name;
+        }
+        MetaDate metaDate = MetaDate.builder().code("200").status("Success").message(message).version("1.0").build();
+        ResourceData resourceData = ResourceData.builder().data(userEntities).build();
+        CustomResponseModel customResponseModel = CustomResponseModel.builder().metaDate(metaDate).resourceData(resourceData).build();
+        return new ResponseEntity<>(customResponseModel, HttpStatus.OK);
+
+    }
+
+    @GetMapping(value = "/get-user-byIds")
+    public ResponseEntity<CustomResponseModel> getUsersFindAllById() {
+        List<UserEntity> userEntities = userManagementService.getUsersFindAllById();
+
+        String message = "Success";
+        if (userEntities == null) {
+            message = "No User Found With Name : ";
+        }
+        MetaDate metaDate = MetaDate.builder().code("200").status("Success").message(message).version("1.0").build();
+        ResourceData resourceData = ResourceData.builder().data(userEntities).build();
+        CustomResponseModel customResponseModel = CustomResponseModel.builder().metaDate(metaDate).resourceData(resourceData).build();
+        return new ResponseEntity<>(customResponseModel, HttpStatus.OK);
+
+    }
+
+    @PutMapping(value = "/update-user/{id}")
+    public ResponseEntity<CustomResponseModel> updateUser(@PathVariable(name = "id") Long id,
+                                                          @RequestBody UserRequestDto userRequestDto) {
+        UserEntity userEntity = userManagementService.updateUser(id, userRequestDto);
+        if (userEntity == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        MetaDate metaDate = MetaDate.builder().code("200").status("Success").message("Success").version("1.0").build();
+        ResourceData resourceData = ResourceData.builder().data(userEntity).build();
+        CustomResponseModel customResponseModel = CustomResponseModel.builder().metaDate(metaDate).resourceData(resourceData).build();
+        return new ResponseEntity<>(customResponseModel, HttpStatus.OK);
+
+    }
+
+    @GetMapping(value = "/getUser-byMobileNumber/{mobile_number}")
+    public ResponseEntity<CustomResponseModel> getByMobileNumber(@PathVariable(name = "mobile_number")
+                                                                     String mobileNumber ){
+        UserEntity userEntity = userManagementService.finByMobileNumber(mobileNumber);
+
+        MetaDate metaDate = MetaDate.builder().code("200").status("Success").message("Success").version("1.0").build();
+        ResourceData resourceData = ResourceData.builder().data(userEntity).build();
+        CustomResponseModel customResponseModel = CustomResponseModel.builder().metaDate(metaDate).resourceData(resourceData).build();
+        return new ResponseEntity<>(customResponseModel, HttpStatus.OK);
+
+    }
 
 }
