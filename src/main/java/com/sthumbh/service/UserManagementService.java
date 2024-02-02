@@ -4,6 +4,7 @@ import com.sthumbh.Entity.UserEntity;
 import com.sthumbh.dto.UserRequestDto;
 import com.sthumbh.dto.UserResponseDto;
 import com.sthumbh.repository.UserManagementRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class UserManagementService {
 
     @Autowired
@@ -74,5 +76,15 @@ public class UserManagementService {
 
     public UserEntity finByMobileNumber(String mobileNumber) {
         return userManagementRepository.findEntityMobileNumber(mobileNumber);
+    }
+
+    public void deleteByName(Long id) {
+        //List<UserEntity> userEntities = userManagementRepository.findByPriceGreaterThan(500l);
+        //log.info("USER : {}",userEntities);
+        userManagementRepository.deleteById(id);
+    }
+
+    public UserEntity getUserByNativeQuery(long id, String mobileNumber, String address) {
+        return userManagementRepository.getUserByNativeQuery(id,mobileNumber,address);
     }
 }

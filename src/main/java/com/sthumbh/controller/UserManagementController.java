@@ -28,6 +28,10 @@ public class UserManagementController {
 
     @PostMapping(value = "/create")
     public ResponseEntity<CustomResponseModel> createUser(@RequestBody @Valid UserRequestDto userRequestDto) {
+
+        /*if (true) {
+            throw new RuntimeException("Test");
+        }*/
         UserResponseDto userResponseDto = userManagementService.createUser(userRequestDto);
         if (userRequestDto == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -135,19 +139,37 @@ public class UserManagementController {
         ResourceData resourceData = ResourceData.builder().data(userEntity).build();
         CustomResponseModel customResponseModel = CustomResponseModel.builder().metaDate(metaDate).resourceData(resourceData).build();
         return new ResponseEntity<>(customResponseModel, HttpStatus.OK);
-
     }
 
     @GetMapping(value = "/getUser-byMobileNumber/{mobile_number}")
     public ResponseEntity<CustomResponseModel> getByMobileNumber(@PathVariable(name = "mobile_number")
-                                                                     String mobileNumber ){
+                                                                 String mobileNumber) {
         UserEntity userEntity = userManagementService.finByMobileNumber(mobileNumber);
 
         MetaDate metaDate = MetaDate.builder().code("200").status("Success").message("Success").version("1.0").build();
         ResourceData resourceData = ResourceData.builder().data(userEntity).build();
         CustomResponseModel customResponseModel = CustomResponseModel.builder().metaDate(metaDate).resourceData(resourceData).build();
         return new ResponseEntity<>(customResponseModel, HttpStatus.OK);
+    }
 
+    @DeleteMapping(value = "/deleteByName/{id}")
+    public ResponseEntity<CustomResponseModel> deleteByName(@PathVariable(name = "id") Long id) {
+        userManagementService.deleteByName(id);
+        MetaDate metaDate = MetaDate.builder().code("200").status("Success").message("Deleted Successfully").version("1.0").build();
+        CustomResponseModel customResponseModel = CustomResponseModel.builder().metaDate(metaDate).build();
+        return new ResponseEntity<>(customResponseModel, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getUser-byId-MobileNumber")
+    public ResponseEntity<CustomResponseModel> getUserByNativeQuery(@RequestParam(name = "id") long id,
+                                                                    @RequestParam(name = "mobile_number") String mobileNumber,
+                                                                    @RequestParam(name = "address") String address) {
+        UserEntity userEntity = userManagementService.getUserByNativeQuery(id, mobileNumber, address);
+
+        MetaDate metaDate = MetaDate.builder().code("200").status("Success").message("Success").version("1.0").build();
+        ResourceData resourceData = ResourceData.builder().data(userEntity).build();
+        CustomResponseModel customResponseModel = CustomResponseModel.builder().metaDate(metaDate).resourceData(resourceData).build();
+        return new ResponseEntity<>(customResponseModel, HttpStatus.OK);
     }
 
 }

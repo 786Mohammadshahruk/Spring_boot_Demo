@@ -24,4 +24,6 @@ public class UserEntity {
     private String address;
 
     private String mobileNumber;
+
+    private Long price;
 }
