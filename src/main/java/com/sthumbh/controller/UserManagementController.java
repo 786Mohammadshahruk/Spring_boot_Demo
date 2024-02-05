@@ -28,16 +28,10 @@ public class UserManagementController {
 
     @PostMapping(value = "/create")
     public ResponseEntity<CustomResponseModel> createUser(@RequestBody @Valid UserRequestDto userRequestDto) {
-
-        /*if (true) {
-            throw new RuntimeException("Test");
-        }*/
         UserResponseDto userResponseDto = userManagementService.createUser(userRequestDto);
         if (userRequestDto == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-
-
         MetaDate metaDate = MetaDate.builder()
                 .code("201").status("Success")
                 .message("User Created").version("1.0")
