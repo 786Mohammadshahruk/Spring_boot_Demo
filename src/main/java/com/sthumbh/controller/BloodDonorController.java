@@ -2,6 +2,7 @@ package com.sthumbh.controller;
 
 import com.sthumbh.Entity.BloodDetailsEntity;
 import com.sthumbh.dto.BloodDetailsDto;
+import com.sthumbh.exception.handler.BloodDetailNotFoundException;
 import com.sthumbh.model.CustomResponseModel;
 import com.sthumbh.model.MetaDate;
 import com.sthumbh.model.ResourceData;
@@ -30,8 +31,7 @@ public class BloodDonorController<T> {
     public ResponseEntity<CustomResponseModel> getBloodTypeDetails(
             @PathVariable(name = "type")String type,
             @RequestParam(name = "isDonateBloodTo", required = false, defaultValue = "true") boolean isDonateBloodTo,
-            @RequestParam(name = "isReceiveBloodFrom", required = false, defaultValue = "true")boolean isReceiveBloodFrom)
-    {
+            @RequestParam(name = "isReceiveBloodFrom", required = false, defaultValue = "true")boolean isReceiveBloodFrom) throws BloodDetailNotFoundException {
         BloodDetailsEntity bloodDetailsEntity = bloodDonorService.getBloodTypeDetails(type,isDonateBloodTo,isReceiveBloodFrom);
         return new ResponseEntity<>(getResponse("200", "Success", "Blood Details Added", bloodDetailsEntity), HttpStatus.CREATED);
     }
