@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 
@@ -30,6 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 				url = "https.gmail.com"
 		)
 )
+@EnableScheduling
 public class SpringBootDemoApplication {
 
 	public static void main(String[] args) {
