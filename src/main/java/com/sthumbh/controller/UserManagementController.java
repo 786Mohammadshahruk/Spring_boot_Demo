@@ -7,6 +7,10 @@ import com.sthumbh.model.CustomResponseModel;
 import com.sthumbh.model.MetaDate;
 import com.sthumbh.model.ResourceData;
 import com.sthumbh.service.UserManagementService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,6 +19,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(
+        name = "CURD REST API for User Management",
+        description = "Create, Update, Delete, Get"
+)
 @RestController
 @Slf4j
 public class UserManagementController {
@@ -26,6 +34,15 @@ public class UserManagementController {
     }
 
 
+    @Operation(
+            summary = "Creating a User",
+            description = "Creating User REST API"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Http Status 201 Created"),
+            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @PostMapping(value = "/create")
     public ResponseEntity<CustomResponseModel> createUser(@RequestBody @Valid UserRequestDto userRequestDto) {
         UserResponseDto userResponseDto = userManagementService.createUser(userRequestDto);
