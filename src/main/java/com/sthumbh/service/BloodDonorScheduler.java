@@ -4,6 +4,7 @@ import com.sthumbh.Entity.BloodDetailsEntity;
 import com.sthumbh.repository.BloodDonorRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,20 @@ public class BloodDonorScheduler {
         for (BloodDetailsEntity b : bloodDetailsEntities) {
 
             log.info(" Blood Details : {}", b);
+        }
+    }
+
+    @Async
+    public void checkRecords() {
+        bloodDonorRepository.findAll();
+        for (BloodDetailsEntity bloodDetailsEntity : bloodDonorRepository.findAll()) {
+            System.out.println(bloodDetailsEntity);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 }
