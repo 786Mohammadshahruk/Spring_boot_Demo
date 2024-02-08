@@ -17,7 +17,7 @@ public class BloodDonorScheduler {
 
     int x = 1;
 
-    @Scheduled(cron = "0 * * ? * *")
+    //@Scheduled(cron = "0 * * ? * *")
     public void doCheckBloodDonorDetail() {
         List<BloodDetailsEntity> bloodDetailsEntities = bloodDonorRepository.findAll();
         System.out.println(x++);

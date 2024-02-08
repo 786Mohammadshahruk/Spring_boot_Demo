@@ -20,6 +20,7 @@ public class UserManagementService {
     private UserManagementRepository userManagementRepository;
 
     public UserResponseDto createUser(UserRequestDto userRequestDto) {
+
         UserEntity userEntity = new UserEntity();
         userEntity.setName(userRequestDto.getName());
         userEntity.setAddress(userRequestDto.getAddress());
