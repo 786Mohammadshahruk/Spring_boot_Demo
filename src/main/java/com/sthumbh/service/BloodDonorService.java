@@ -18,7 +18,6 @@ public class BloodDonorService {
     private BloodDonorScheduler bloodDonorScheduler;
 
     public BloodDetailsEntity createBloodTypeDetails(BloodDetailsDto bloodDetailsDto) {
-        System.out.println(Thread.currentThread().getName());
         String id = UUID.randomUUID().toString();
         BloodDetailsEntity bloodDetailsEntity = new BloodDetailsEntity();
         bloodDetailsEntity.setId(id);
@@ -47,4 +46,5 @@ public class BloodDonorService {
 
         return bloodDetailsEntity;
     }
+
 }
